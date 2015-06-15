@@ -20,6 +20,4 @@ func Cat_init_if() {
 //apps with cat.go have to call Instance, 
 //keep and manage the instance returned properly.
 func Instance() *cat {
-	Cat_init_if()
-	return &cat{M.Newtree()}
 }
