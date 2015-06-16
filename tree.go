@@ -18,7 +18,7 @@ func NewTree() Tree{
 
 func(this *tree) NewTransaction(t string, n string) Transaction{
 	stack := this.stack
-	transaction := NewTransaction(t, n, this.flush)
+	transaction := NewTransaction(t, n, this.flush_t)
 	l := len(stack)
 	if l > 0 {
 		parent := stack[l-1]
@@ -29,7 +29,7 @@ func(this *tree) NewTransaction(t string, n string) Transaction{
 	return nil
 }
 
-func(this *tree) flush(t Transaction) {
+func(this *tree) flush_t(t Transaction) {
 	stack := this.stack
 	current := len(stack)-1
 	for ;current>-1;current-- {
