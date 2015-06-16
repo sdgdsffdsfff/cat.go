@@ -19,5 +19,6 @@ func Cat_init_if() {
 //As it's not recommended to apply thread local in go, 
 //apps with cat.go have to call Instance, 
 //keep and manage the instance returned properly.
-func Instance() *cat {
+func Instance() interface{} {
+	return nil
 }

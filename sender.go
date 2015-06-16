@@ -1,8 +1,8 @@
 package cat
 
-import "bytes"
-import "fmt"
 import "net"
+
+var Tchan chan Transaction = make(chan Transaction)
 
 //sender_run is internally used and only called by Cat_init_if.
 //sender_run receive Transaction from a specific channel, 
