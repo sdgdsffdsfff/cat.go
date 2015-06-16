@@ -26,7 +26,8 @@ func(this *tree) NewTransaction(t string, n string) Transaction{
 	} else {
 		this.root = transaction
 	}
-	return nil
+	this.stack = append(stack, transaction)
+	return transaction
 }
 
 func(this *tree) flush_t(t Transaction) {
@@ -35,6 +36,7 @@ func(this *tree) flush_t(t Transaction) {
 	for ;current>-1;current-- {
 		if stack[current] == t {
 			this.stack = stack[:current]
+			break
 		}
 	}
 	if current == 0 {
