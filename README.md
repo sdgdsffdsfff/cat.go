@@ -1,7 +1,6 @@
 PACKAGE DOCUMENTATION
 
 package cat
-    import "./"
 
     Package cat works as a client for Central Application Tracking(CAT).
 
