@@ -45,47 +45,47 @@ var Tchan chan Transaction = make(chan Transaction)
 
 FUNCTIONS
 
-func Cat_init_if()
-    Cat_init_if initialize cat.go, which must be down before any other
-    operations, for which Instance called it automatically.
+func Cat_init_if()  
+    Cat_init_if initialize cat.go, which must be down before any other  
+    operations, for which Instance called it automatically.  
 
-func Instance() interface{}
-    As it's not recommended to apply thread local in go, apps with cat.go
-    have to call Instance, keep and manage the instance returned properly.
+func Instance() interface{}  
+    As it's not recommended to apply thread local in go, apps with cat.go  
+    have to call Instance, keep and manage the instance returned properly.  
 
-func Invoke(f Function, values ...interface{}) ([]reflect.Value, error)
-    Invoke panics if f's Kind is not Func. As accurate validation is skipped
-    for performance concern, don't call Invoke unless you know what you're
+func Invoke(f Function, values ...interface{}) ([]reflect.Value, error)  
+    Invoke panics if f's Kind is not Func. As accurate validation is skipped  
+    for performance concern, don't call Invoke unless you know what you're  
     doing.
 
 TYPES
 
 type Function interface{}
 
-type Message interface {
-    SetStatus(Status)
-    Add(string, string)
-    GetType() string
-    GetName() string
-    GetStatus() string
-    GetTimestamp() time.Time
-    GetData() []byte
+type Message interface {  
+    SetStatus(Status)  
+    Add(string, string)  
+    GetType() string  
+    GetName() string  
+    GetStatus() string  
+    GetTimestamp() time.Time  
+    GetData() []byte  
 }
 
 func NewMessage(t string, n string) Message
 
 type Status interface{}
 
-type Transaction interface {
-    Message
-    AddChild(Message) Transaction
-    Complete()
+type Transaction interface {  
+    Message  
+    AddChild(Message) Transaction  
+    Complete()  
 }
 
 func NewTransaction(t string, n string, f Function) Transaction
 
-type Tree interface {
-    NewTransaction(string, string) Transaction
+type Tree interface {  
+    NewTransaction(string, string) Transaction  
 }
 
 func NewTree() Tree
