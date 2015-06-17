@@ -5,7 +5,7 @@ import "reflect"
 var TAB = "\t"
 var LF = "\n"
 
-type Status interface{}
+type Error interface{}
 
 type Function interface{}
 
