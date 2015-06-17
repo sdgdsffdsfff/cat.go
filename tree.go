@@ -6,17 +6,17 @@ type Tree interface {
 
 type tree struct {
 	stack []Transaction
-	root Transaction
+	root  Transaction
 }
 
-func NewTree() Tree{
+func NewTree() Tree {
 	return &tree{
 		make([]Transaction, 0),
 		nil,
 	}
 }
 
-func(this *tree) NewTransaction(t string, n string) Transaction{
+func (this *tree) NewTransaction(t string, n string) Transaction {
 	stack := this.stack
 	transaction := NewTransaction(t, n, this.flush_t)
 	l := len(stack)
@@ -30,16 +30,16 @@ func(this *tree) NewTransaction(t string, n string) Transaction{
 	return transaction
 }
 
-func(this *tree) flush_t(t Transaction) {
+func (this *tree) flush_t(t Transaction) {
 	stack := this.stack
-	current := len(stack)-1
-	for ;current>-1;current-- {
+	current := len(stack) - 1
+	for ; current > -1; current-- {
 		if stack[current] == t {
 			this.stack = stack[:current]
 			break
 		}
 	}
 	if current == 0 {
-		Tchan <- this.root
+		Mchan <- this.root
 	}
 }

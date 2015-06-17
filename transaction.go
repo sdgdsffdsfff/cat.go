@@ -4,7 +4,7 @@ import "time"
 import "bytes"
 import "strconv"
 
-type Transaction interface{
+type Transaction interface {
 	Message
 	AddChild(Message) Transaction
 	Complete()
@@ -12,14 +12,14 @@ type Transaction interface{
 
 type transaction struct {
 	Meta
-	f Function
-	start time.Time
-	end time.Time
+	f        Function
+	start    time.Time
+	end      time.Time
 	duration time.Duration
 	children []Message
 }
 
-func NewTransaction(t string, n string, f Function) Transaction{
+func NewTransaction(t string, n string, f Function) Transaction {
 	return &transaction{
 		NewMeta(t, n),
 		f,
@@ -30,7 +30,7 @@ func NewTransaction(t string, n string, f Function) Transaction{
 	}
 }
 
-func (t *transaction) AddChild(m Message) Transaction{
+func (t *transaction) AddChild(m Message) Transaction {
 	if t.children == nil {
 		t.children = make([]Message, 0)
 	}
@@ -41,10 +41,12 @@ func (t *transaction) AddChild(m Message) Transaction{
 func (t *transaction) Complete() {
 	t.end = time.Now()
 	t.duration = time.Since(t.start)
-	Invoke(t.f, t)
+	if t.f != nil {
+		Invoke(t.f, t)
+	}
 }
 
-func (t *transaction) Encode(buf *bytes.Buffer) Error{
+func (t *transaction) Encode(buf *bytes.Buffer) Error {
 	if t.children == nil || len(t.children) == 0 {
 		buf.WriteString("A")
 		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))

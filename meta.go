@@ -4,7 +4,7 @@ import "time"
 import "bytes"
 import "fmt"
 
-type Meta interface{
+type Meta interface {
 	SetStatus(Error)
 	Add(string, string)
 	GetType() string
@@ -15,20 +15,20 @@ type Meta interface{
 }
 
 type meta struct {
-	m_type string
-	m_name string
-	m_status string
+	m_type      string
+	m_name      string
+	m_status    string
 	m_timestamp time.Time
-	m_data *bytes.Buffer
+	m_data      *bytes.Buffer
 }
 
-func NewMeta(t string, n string) Meta{
+func NewMeta(t string, n string) Meta {
 	return &meta{
-		m_type: t,
-		m_name: n,
-		m_status: "unset",
+		m_type:      t,
+		m_name:      n,
+		m_status:    "unset",
 		m_timestamp: time.Now(),
-		m_data: nil,
+		m_data:      nil,
 	}
 }
 
@@ -71,5 +71,9 @@ func (m *meta) GetTimestamp() time.Time {
 }
 
 func (m *meta) GetData() []byte {
-	return m.m_data.Bytes()
+	if m.m_data != nil {
+		return m.m_data.Bytes()
+	} else {
+		return make([]byte, 0)
+	}
 }
