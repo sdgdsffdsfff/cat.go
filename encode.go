@@ -2,6 +2,11 @@ package cat
 
 import "bytes"
 import "strconv"
+import "encoding/binary"
+import "strings"
+import "fmt"
+import "time"
+
 
 type Encodable interface {
 	Encode(*bytes.Buffer) Error
@@ -53,4 +58,57 @@ func (t *transaction) Encode(buf *bytes.Buffer) Error {
 		buf.WriteString(LF)
 	}
 	return recover()
+}
+
+func(h header) Encode(buf *bytes.Buffer) Error{
+	buf.WriteString("PT1")
+	buf.WriteString(TAB)
+	buf.WriteString(h.m_domain)
+	buf.WriteString(TAB)
+	buf.WriteString(h.m_hostname)
+	buf.WriteString(TAB)
+	buf.WriteString(h.m_ipAddress)
+	buf.WriteString(TAB)
+	buf.WriteString("main")
+	buf.WriteString(TAB)
+	buf.WriteString("1")
+	buf.WriteString(TAB)
+	buf.WriteString("main")
+	buf.WriteString(TAB)
+	MESSAGE_ID_FACTORY.Next().Encode(buf)
+	buf.WriteString(TAB)
+	buf.WriteString("null")
+	buf.WriteString(TAB)
+	buf.WriteString("null")
+	buf.WriteString(TAB)
+	buf.WriteString("null")
+	buf.WriteString(TAB)
+	buf.WriteString(LF)
+	return recover()
+}
+
+func (mid message_id) Encode(buf *bytes.Buffer) Error{
+	buf.WriteString(mid.GetDomain())
+	buf.WriteString("-")
+	buf.WriteString(iptohex(mid.GetIpAddress()))
+	buf.WriteString("-")
+	buf.WriteString(strconv.FormatInt(time.Now().Unix() / 3600, 10))
+	buf.WriteString("-")
+	buf.WriteString(strconv.Itoa(mid.index))
+	return recover()
+}
+
+func int32tobytes(i int32) []byte {
+	buf := bytes.NewBuffer([]byte{})
+	binary.Write(buf, binary.BigEndian, i)
+	return buf.Bytes()
+}
+
+func iptohex(ip string) string {
+	var strs []string = strings.Split(ip, ".")
+	for i := 0; i < 4; i++ {
+		digit, _ := strconv.Atoi(strs[i])
+		strs[i] = fmt.Sprintf("%x", digit)
+	}
+	return strings.Join(strs, "")
 }
