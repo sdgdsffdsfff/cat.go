@@ -21,24 +21,13 @@ func NewMessageIdFactory() MessageIdFactory {
 var MESSAGE_ID_FACTORY MessageIdFactory = NewMessageIdFactory()
 
 func (f *message_id_factory) Next() MessageId {
-	select {
-	case nextid := <-f.next_ids:
-		next := NewMessageId()
-		next.SetIndex(nextid)
-		return next
-	default:
-		go f.generate()
-		return f.Next()
-	}
-}
-
-func (f *message_id_factory) generate() {
 	f.index_l <- 0
-	for i := 0; i< 1<<10; i++ {
-		f.next_ids <- f.index
-		f.index++
-	}
+	index := f.index
+	f.index++
 	<-f.index_l
+	next := NewMessageId()
+	next.SetIndex(index)
+	return next
 }
 
 type MessageId interface {
