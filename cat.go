@@ -20,8 +20,6 @@ type cat struct {
 func Cat_init_if() {
 	cat_lock <- 0
 	if !cat_initialized {
-		/*read config
-		start sender*/
 		go sender_run()
 		cat_initialized = true
 	}
