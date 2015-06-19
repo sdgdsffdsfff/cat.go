@@ -18,7 +18,6 @@ type cat struct {
 	Tree
 }
 
-
 func(c *cat) LogError(err error) {
 	if err != nil {
 		e := c.NewEvent("error", err.Error())
@@ -32,7 +31,6 @@ func(c *cat) LogPanic(err Panic) {
 		e := c.NewEvent("panic", fmt.Sprintf("%v", err))
 		e.SetStatus("ERROR")
 		e.Complete()
-
 	}
 }
 

@@ -11,14 +11,15 @@
 		func bizMethod() {
 			t := mycat.NewTransaction("URL", "Page")
 			defer func {
-				err := recover()
-				t.SetStatus(err)
+				p := recover()
+				mycat.LogPanic(p)
+				t.SetStatus(p)
 				t.Complete()
 			}()
 			// do your bussiness here
+			// perhaps panic
+			t.Add("k0", "v0")
 			t.Add("k1", "v1")
-			t.Add("k2", "v2")
-			t.Add("k3", "v3")
 		}
 	
 	//Atomic Event is not supported yet.
@@ -27,8 +28,8 @@
 		mycat := cat.Instance()
 		func bizMethod() {
 			e := mycat.NewEvent("Review", "New")
-			e.Add("id", 12345)
-			e.Add("user", "john")
+			e.Add("k0", "v0")
+			e.Add("k1", "v1")
 			e.SetStatus("0")
 			e.Complete()
 		}()
