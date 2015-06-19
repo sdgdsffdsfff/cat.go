@@ -60,6 +60,23 @@ func (t *transaction) Encode(buf *bytes.Buffer) Error {
 	return recover()
 }
 
+func(h event) Encode(buf *bytes.Buffer) Error{
+	buf.WriteString("E")
+	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
+	buf.WriteString(TAB)
+	buf.WriteString(h.GetType())
+	buf.WriteString(TAB)
+	buf.WriteString(h.GetName())
+	buf.WriteString(TAB)
+	buf.WriteString(h.GetStatus())
+	buf.WriteString(TAB)
+	buf.Write(h.GetData())
+	buf.WriteString(TAB)
+	buf.WriteString(LF)
+	return recover()
+}
+
+
 func(h header) Encode(buf *bytes.Buffer) Error{
 	buf.WriteString("PT1")
 	buf.WriteString(TAB)

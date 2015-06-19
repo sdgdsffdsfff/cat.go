@@ -20,7 +20,8 @@
 			t.Add("k2", "v2")
 			t.Add("k3", "v3")
 		}
-
+	
+	//Atomic Event is not supported yet.
 	Use Event
 
 		mycat := cat.Instance()
