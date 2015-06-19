@@ -19,5 +19,5 @@ func main() {
 		chan1 <- 0
 	}()
 
-	//panic("new panic")
+	//panic("mypanic")
 }

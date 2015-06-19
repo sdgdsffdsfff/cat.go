@@ -19,9 +19,16 @@ func main(){
 func write(){
 	cat := cat.Instance()
 	for {
-		tr := cat.NewTransaction("TYPE", "Mul")
-		err := recover()
-		tr.SetStatus(err)
-		tr.Complete()
+		_write(cat)
 	}
+}
+
+func _write(cat cat.Cat){
+	tr := cat.NewTransaction("TYPE", "Mul")
+	defer func(){
+		p := recover()
+		tr.SetStatus(p)
+		tr.Complete()
+	}()
+	panic("mul error")
 }
