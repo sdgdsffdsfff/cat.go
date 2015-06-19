@@ -22,8 +22,9 @@
 			t.Add("k1", "v1")
 		}
 	
-	//Atomic Event is not supported yet.
 	Use Event
+
+		//Atomic Event is not supported yet.
 
 		mycat := cat.Instance()
 		func bizMethod() {
@@ -33,5 +34,14 @@
 			e.SetStatus("0")
 			e.Complete()
 		}()
+
+	Log Error As Event
+	
+		mycat := cat.Instance()
+		func bizMethod() {
+			err, ret := someMethod()
+			mycat.LogError(err)
+		}()
+
 */
 package cat

@@ -9,8 +9,13 @@ var cat_initialized bool = false
 //Use it to create Transaction, Event, Heartbeat, Trace...
 //Every Cat instance has 1 Tree instance.
 type Cat interface {
+	//Tree provides methods to create different kinds of messages
 	Tree
+	//Create a new Event whose type is error and status is ERROR,
+	//nil is ignored
 	LogError(e error)
+	//Create a new Event whose type is panic and status is ERROR,
+	//nil Panic is ignored
 	LogPanic(e Panic)
 }
 
@@ -18,7 +23,7 @@ type cat struct {
 	Tree
 }
 
-func(c *cat) LogError(err error) {
+func (c *cat) LogError(err error) {
 	if err != nil {
 		e := c.NewEvent("error", err.Error())
 		e.SetStatus("ERROR")
@@ -26,7 +31,7 @@ func(c *cat) LogError(err error) {
 	}
 }
 
-func(c *cat) LogPanic(err Panic) {
+func (c *cat) LogPanic(err Panic) {
 	if err != nil {
 		e := c.NewEvent("panic", fmt.Sprintf("%v", err))
 		e.SetStatus("ERROR")
