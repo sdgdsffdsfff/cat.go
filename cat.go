@@ -34,7 +34,6 @@ func(c *cat) LogPanic(err Panic) {
 		e.Complete()
 
 	}
-
 }
 
 //Cat_init_if initialize cat.go,
