@@ -5,7 +5,7 @@ import "bytes"
 import "fmt"
 
 type Meta interface {
-	SetStatus(Error)
+	SetStatus(Panic)
 	Add(string, string)
 	GetType() string
 	GetName() string
@@ -32,7 +32,7 @@ func NewMeta(t string, n string) Meta {
 	}
 }
 
-func (m *meta) SetStatus(err Error) {
+func (m *meta) SetStatus(err Panic) {
 	if err == nil {
 		m.m_status = "0"
 	} else {

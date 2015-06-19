@@ -5,7 +5,7 @@ import "reflect"
 var TAB = "\t"
 var LF = "\n"
 
-type Error interface{}
+type Panic interface{}
 
 type Function interface{}
 

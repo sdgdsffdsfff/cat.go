@@ -3,6 +3,7 @@ package cat
 import "time"
 import "bytes"
 import "net"
+import "fmt"
 
 var Mchan chan Message = make(chan Message, 1<<24)
 var MaxBatchSize int = 1 << 8
@@ -63,5 +64,6 @@ func sender_send(datas <-chan []byte) {
 	defer conn.Close()
 	for data := range datas {
 		conn.Write(data)
+		fmt.Printf("%s", data)
 	}
 }

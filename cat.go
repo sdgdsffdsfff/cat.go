@@ -1,5 +1,7 @@
 package cat
 
+import "fmt"
+
 var cat_lock chan int = make(chan int, 1)
 var cat_initialized bool = false
 
@@ -8,10 +10,31 @@ var cat_initialized bool = false
 //Every Cat instance has 1 Tree instance.
 type Cat interface {
 	Tree
+	LogError(e error)
+	LogPanic(e Panic)
 }
 
 type cat struct {
 	Tree
+}
+
+
+func(c *cat) LogError(err error) {
+	if err != nil {
+		e := c.NewEvent("error", err.Error())
+		e.SetStatus("ERROR")
+		e.Complete()
+	}
+}
+
+func(c *cat) LogPanic(err Panic) {
+	if err != nil {
+		e := c.NewEvent("panic", fmt.Sprintf("%v", err))
+		e.SetStatus("ERROR")
+		e.Complete()
+
+	}
+
 }
 
 //Cat_init_if initialize cat.go,

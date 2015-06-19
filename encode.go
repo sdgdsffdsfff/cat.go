@@ -9,10 +9,10 @@ import "time"
 
 
 type Encodable interface {
-	Encode(*bytes.Buffer) Error
+	Encode(*bytes.Buffer) Panic
 }
 
-func (t *transaction) Encode(buf *bytes.Buffer) Error {
+func (t *transaction) Encode(buf *bytes.Buffer) Panic {
 	if t.children == nil || len(t.children) == 0 {
 		buf.WriteString("A")
 		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))
@@ -60,7 +60,7 @@ func (t *transaction) Encode(buf *bytes.Buffer) Error {
 	return recover()
 }
 
-func(h event) Encode(buf *bytes.Buffer) Error{
+func(h event) Encode(buf *bytes.Buffer) Panic{
 	buf.WriteString("E")
 	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
 	buf.WriteString(TAB)
@@ -77,7 +77,7 @@ func(h event) Encode(buf *bytes.Buffer) Error{
 }
 
 
-func(h header) Encode(buf *bytes.Buffer) Error{
+func(h header) Encode(buf *bytes.Buffer) Panic{
 	buf.WriteString("PT1")
 	buf.WriteString(TAB)
 	buf.WriteString(h.m_domain)
@@ -104,7 +104,7 @@ func(h header) Encode(buf *bytes.Buffer) Error{
 	return recover()
 }
 
-func (mid message_id) Encode(buf *bytes.Buffer) Error{
+func (mid message_id) Encode(buf *bytes.Buffer) Panic{
 	buf.WriteString(mid.GetDomain())
 	buf.WriteString("-")
 	buf.WriteString(iptohex(mid.GetIpAddress()))
