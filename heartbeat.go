@@ -64,27 +64,31 @@ func newstatus() *status {
 			strconv.FormatInt(time.Now().UnixNano()/1000000, 10),
 			strconv.FormatInt(time.Now().Unix()/60, 10),
 			"4.0.30319.296",
-			"",
-			"3.0.0.24",
-			time.Now().Format("2006-01-02 15:04:05"),
+			"deploy",
 			"/home/phyxdown",
 		}, &os{
-			"CentOS",
-			"AMD64",
-			"7",
+			"Linux",
+			"amd64",
+			"3.10.0-123.el7.x86_64",
 			"4",
 			"0",
 			"1312",
 			"8589934592",
-			"0",
-			"0",
+			//"0",
+			//"0",
 		}, &disk{
 			&diskvolume{
 				"/", "261621313536", "201279385600", "198622265344",
 			},
-		}, &memory{"91889664", "75637312", "8793096", &gc{"Gen 0", "1",}},
-		&thread{"34", "34", &dump{}},
-		&message{"0", "0", "0"},
+		}, &memory{
+			"91889664", "75637312", "8793096", &gc{"Gen 0", "1",},
+		},
+		&thread{
+			"34", "34", &dump{},
+		},
+		&message{
+			"1922", "1", "3258904",
+		},
 		make([]*extension, 0),
 	}
 }
@@ -94,8 +98,6 @@ type runtime struct {
 	UpTime string `xml:"up-time,attr"`
 	JavaVersion string `xml:"java-version,attr"`
 	UserName string `xml:"user-name,attr"`
-	FileVersion string `xml:"file-version,attr"`
-	LastFlushMark string `xml:"last-flush-mark,attr"`
 	UserDir string `xml:"user-dir"`
 }
 
@@ -107,8 +109,8 @@ type os struct {
 	SystemLoadAverage string `xml:"system-load-average,attr"`
 	ProcessTime string `xml:"process-time,attr"`
 	TotalPhysicalMemory string `xml:"total-physical-memory,attr"`
-	AssembliesLoad string `xml:"assemblies-load,attr"`
-	ClassLoad string `xml:"class-loaded,attr"`
+	//AssembliesLoad string `xml:"assemblies-load,attr"`
+	//ClassLoad string `xml:"class-loaded,attr"`
 }
 
 type disk struct {
@@ -152,7 +154,7 @@ type message struct {
 
 type extension struct {
 	Id               string            `xml:"id,attr"`
-	ExtensionDetails []extensionDetail `xml:"extenionDetail"`
+	ExtensionDetails []extensionDetail `xml:"extensionDetail"`
 }
 
 func newextension(id string) *extension {

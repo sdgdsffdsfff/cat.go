@@ -15,7 +15,7 @@ type header struct {
 
 func NewHeader() Header {
 	return header{
-		"900407",
+		"555545",
 		"DST51752",
 		"192.168.141.131",
 	}
