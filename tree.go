@@ -31,8 +31,8 @@ func (this *tree) NewTransaction(t string, n string) Transaction {
 	return transaction
 }
 
-func (this *tree)NewEvent(t string, n string) Event {
-	return NewEvent(t, n ,this.flush_e)
+func (this *tree) NewEvent(t string, n string) Event {
+	return NewEvent(t, n, this.flush_e)
 }
 
 func (this *tree) flush_t(t Transaction) {

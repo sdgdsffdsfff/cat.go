@@ -8,12 +8,12 @@ type Header interface {
 }
 
 type header struct {
-	m_domain string
-	m_hostname string
+	m_domain    string
+	m_hostname  string
 	m_ipAddress string
 }
 
-func NewHeader() Header{
+func NewHeader() Header {
 	return header{
 		"900407",
 		"DST51752",

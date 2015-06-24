@@ -5,8 +5,8 @@ type MessageIdFactory interface {
 }
 
 type message_id_factory struct {
-	index int
-	index_l chan int
+	index    int
+	index_l  chan int
 	next_ids chan int
 }
 

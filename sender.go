@@ -13,12 +13,12 @@ var MaxBatchSize int = 1 << 8
 func sender_run() {
 	for {
 		if sender_collect() {
-			time.Sleep(1<<16*time.Microsecond)
+			time.Sleep(1 << 16 * time.Microsecond)
 		}
 	}
 }
 
-func sender_collect() bool{
+func sender_collect() bool {
 	messages := make(chan Message, MaxBatchSize)
 	var count = 0
 collect:

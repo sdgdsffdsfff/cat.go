@@ -21,7 +21,7 @@
 			t.AddData("k0", "v0")
 			t.AddData("k1", "v1")
 		}
-	
+
 	Use Event
 
 		//Atomic Event is not supported yet.
@@ -36,7 +36,7 @@
 		}()
 
 	Log Error As Event
-	
+
 		mycat := cat.Instance()
 		func bizMethod() {
 			err, ret := someMethod()

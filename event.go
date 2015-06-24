@@ -10,7 +10,7 @@ type event struct {
 	f Function
 }
 
-func NewEvent(t string, n string, f Function) Event{
+func NewEvent(t string, n string, f Function) Event {
 	return &event{
 		NewMeta(t, n),
 		f,
