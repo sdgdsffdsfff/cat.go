@@ -8,10 +8,10 @@ import "fmt"
 import "time"
 
 type Encodable interface {
-	Encode(*bytes.Buffer) Panic
+	Encode(*bytes.Buffer)
 }
 
-func (t *transaction) Encode(buf *bytes.Buffer) Panic {
+func (t *transaction) Encode(buf *bytes.Buffer) {
 	if t.children == nil || len(t.children) == 0 {
 		buf.WriteString("A")
 		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))
@@ -56,10 +56,9 @@ func (t *transaction) Encode(buf *bytes.Buffer) Panic {
 		buf.WriteString(TAB)
 		buf.WriteString(LF)
 	}
-	return recover()
 }
 
-func (h event) Encode(buf *bytes.Buffer) Panic {
+func (h event) Encode(buf *bytes.Buffer) {
 	buf.WriteString("E")
 	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
 	buf.WriteString(TAB)
@@ -72,14 +71,12 @@ func (h event) Encode(buf *bytes.Buffer) Panic {
 	buf.Write(h.GetData())
 	buf.WriteString(TAB)
 	buf.WriteString(LF)
-	return recover()
 }
 
-func (h heartbeat) Encode(buf *bytes.Buffer) Panic {
-	return recover()
+func (h heartbeat) Encode(buf *bytes.Buffer) {
 }
 
-func (h header) Encode(buf *bytes.Buffer) Panic {
+func (h header) Encode(buf *bytes.Buffer) {
 	buf.WriteString("PT1")
 	buf.WriteString(TAB)
 	buf.WriteString(h.m_domain)
@@ -103,10 +100,9 @@ func (h header) Encode(buf *bytes.Buffer) Panic {
 	buf.WriteString("null")
 	buf.WriteString(TAB)
 	buf.WriteString(LF)
-	return recover()
 }
 
-func (mid message_id) Encode(buf *bytes.Buffer) Panic {
+func (mid message_id) Encode(buf *bytes.Buffer) {
 	buf.WriteString(mid.GetDomain())
 	buf.WriteString("-")
 	buf.WriteString(iptohex(mid.GetIpAddress()))
@@ -114,7 +110,6 @@ func (mid message_id) Encode(buf *bytes.Buffer) Panic {
 	buf.WriteString(strconv.FormatInt(time.Now().Unix()/3600, 10))
 	buf.WriteString("-")
 	buf.WriteString(strconv.Itoa(mid.index))
-	return recover()
 }
 
 func int32tobytes(i int32) []byte {
