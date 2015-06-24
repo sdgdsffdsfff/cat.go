@@ -72,7 +72,7 @@ func (m *meta) GetTimestamp() time.Time {
 }
 
 func (m *meta) SetData(data []byte) {
-	m.m_data= new(bytes.Buffer)
+	m.m_data = new(bytes.Buffer)
 	m.m_data.Write(data)
 }
 

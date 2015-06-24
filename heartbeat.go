@@ -5,8 +5,8 @@ import "encoding/xml"
 
 type Heartbeat interface {
 	Message
-	Set(extension_id string, extension_detail_id string, value string) Heartbeat
-	Complete() 
+	Set(extension_id string, extension_detail_id string, value string)
+	Complete()
 }
 
 //refactor expected
@@ -25,7 +25,7 @@ func NewHeartbeat(t string, n string, f Function) Heartbeat {
 }
 
 type status struct {
-	Timestamp string      `xml:"timestamp,attr"`
+	Timestamp  string       `xml:"timestamp,attr"`
 	Extensions []*extension `xml:"extension"`
 }
 
@@ -41,7 +41,7 @@ type extension struct {
 	ExtensionDetails []extensionDetail `xml:"extenionDetail"`
 }
 
-func newextension(id string) *extension{
+func newextension(id string) *extension {
 	return &extension{
 		id,
 		make([]extensionDetail, 0),
@@ -60,17 +60,17 @@ func _extensionDetail(id string, value string) extensionDetail {
 	}
 }
 
-func (h *heartbeat) Set(extension_id string, extension_detail_id string, value string) Heartbeat {
-	for _, e := range h.s.Extensions{
+func (h *heartbeat) Set(extension_id string, extension_detail_id string, value string) {
+	for _, e := range h.s.Extensions {
 		if e.Id == extension_id {
 			e.ExtensionDetails = append(e.ExtensionDetails, _extensionDetail(extension_detail_id, value))
-			return h
+			return
 		}
 	}
 	e := newextension(extension_id)
 	e.ExtensionDetails = append(e.ExtensionDetails, _extensionDetail(extension_detail_id, value))
 	h.s.Extensions = append(h.s.Extensions, e)
-	return h
+	return
 }
 
 func (h *heartbeat) Complete() {
