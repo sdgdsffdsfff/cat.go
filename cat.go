@@ -15,7 +15,7 @@ type Cat interface {
 	//nil is ignored
 	LogError(e error)
 	//Create a new Event whose type is panic and status is ERROR,
-	//nil Panic is ignored
+	//nil is ignored
 	LogPanic(e Panic)
 }
 
