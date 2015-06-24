@@ -3,6 +3,7 @@ package cat
 type Tree interface {
 	NewTransaction(string, string) Transaction
 	NewEvent(string, string) Event
+	NewHeartbeat(string, string) Heartbeat
 }
 
 type tree struct {
@@ -32,7 +33,11 @@ func (this *tree) NewTransaction(t string, n string) Transaction {
 }
 
 func (this *tree) NewEvent(t string, n string) Event {
-	return NewEvent(t, n, this.flush_e)
+	return NewEvent(t, n, this.flush)
+}
+
+func (this *tree) NewHeartbeat(t string, n string) Heartbeat {
+	return NewHeartbeat(t, n, this.flush)
 }
 
 func (this *tree) flush_t(t Transaction) {
@@ -49,12 +54,12 @@ func (this *tree) flush_t(t Transaction) {
 	}
 }
 
-func (this *tree) flush_e(e Event) {
+func (this *tree) flush(m Message) {
 	stack := this.stack
 	current := len(stack) - 1
 	if current == -1 {
-		Mchan <- e
+		Mchan <- m
 	} else {
-		stack[current].AddChild(e)
+		stack[current].AddChild(m)
 	}
 }
