@@ -25,13 +25,13 @@ func NewHeartbeat(t string, n string, f Function) Heartbeat {
 
 type status struct {
 	Timestamp string      `xml:"timestamp,attr"`
-	Extensions []extension `xml:"extension"`
+	Extensions []*extension `xml:"extension"`
 }
 
 func _status() status {
 	return status{
 		time.Now().Format("2006-01-02 15:04:05.999"),
-		make([]extension, 0),
+		make([]*extension, 0),
 	}
 }
 
@@ -40,8 +40,8 @@ type extension struct {
 	ExtensionDetails []extensionDetail `xml:"extenionDetail"`
 }
 
-func _extension(id string) extension{
-	return extension{
+func newextension(id string) *extension{
+	return &extension{
 		id,
 		make([]extensionDetail, 0),
 	}
@@ -66,12 +66,12 @@ func (h *heartbeat) Set(extension_id string, extension_detail_id string, value s
 			return
 		}
 	}
-	e := _extension(extension_id)
+	e := newextension(extension_id)
 	e.ExtensionDetails = append(e.ExtensionDetails, _extensionDetail(extension_detail_id, value))
 	h.s.Extensions = append(h.s.Extensions, e)
 }
 
 func (h heartbeat) Get() []byte {
-	bytes, _ := xml.Marshal(h.s)
+	bytes, _ := xml.MarshalIndent(h.s, "", " ")
 	return append([]byte(xml.Header), bytes...)
 }
