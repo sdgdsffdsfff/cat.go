@@ -73,7 +73,20 @@ func (h event) Encode(buf *bytes.Buffer) {
 	buf.WriteString(LF)
 }
 
+//refactor expected.
 func (h heartbeat) Encode(buf *bytes.Buffer) {
+	buf.WriteString("H")
+	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
+	buf.WriteString(TAB)
+	buf.WriteString(h.GetType())
+	buf.WriteString(TAB)
+	buf.WriteString(h.GetName())
+	buf.WriteString(TAB)
+	buf.WriteString(h.GetStatus())
+	buf.WriteString(TAB)
+	buf.Write(h.GetData())
+	buf.WriteString(TAB)
+	buf.WriteString(LF)
 }
 
 func (h header) Encode(buf *bytes.Buffer) {

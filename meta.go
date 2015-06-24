@@ -11,6 +11,7 @@ type Meta interface {
 	GetName() string
 	GetStatus() string
 	GetTimestamp() time.Time
+	SetData([]byte)
 	GetData() []byte
 }
 
@@ -68,6 +69,11 @@ func (m *meta) GetStatus() string {
 
 func (m *meta) GetTimestamp() time.Time {
 	return m.m_timestamp
+}
+
+func (m *meta) SetData(data []byte) {
+	m.m_data= new(bytes.Buffer)
+	m.m_data.Write(data)
 }
 
 func (m *meta) GetData() []byte {

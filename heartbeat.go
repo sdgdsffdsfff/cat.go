@@ -5,10 +5,11 @@ import "encoding/xml"
 
 type Heartbeat interface {
 	Message
-	Set(extension_id string, extension_detail_id string, value string)
-	Get() []byte
+	Set(extension_id string, extension_detail_id string, value string) Heartbeat
+	Complete() 
 }
 
+//refactor expected
 type heartbeat struct {
 	Meta
 	s status
@@ -59,19 +60,23 @@ func _extensionDetail(id string, value string) extensionDetail {
 	}
 }
 
-func (h *heartbeat) Set(extension_id string, extension_detail_id string, value string) {
+func (h *heartbeat) Set(extension_id string, extension_detail_id string, value string) Heartbeat {
 	for _, e := range h.s.Extensions{
 		if e.Id == extension_id {
 			e.ExtensionDetails = append(e.ExtensionDetails, _extensionDetail(extension_detail_id, value))
-			return
+			return h
 		}
 	}
 	e := newextension(extension_id)
 	e.ExtensionDetails = append(e.ExtensionDetails, _extensionDetail(extension_detail_id, value))
 	h.s.Extensions = append(h.s.Extensions, e)
+	return h
 }
 
-func (h heartbeat) Get() []byte {
+func (h *heartbeat) Complete() {
 	bytes, _ := xml.MarshalIndent(h.s, "", " ")
-	return append([]byte(xml.Header), bytes...)
+	h.SetData(append([]byte(xml.Header), bytes...))
+	if h.f != nil {
+		Invoke(h.f, h)
+	}
 }
