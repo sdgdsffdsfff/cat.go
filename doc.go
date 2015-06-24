@@ -18,8 +18,8 @@
 			}()
 			// do your bussiness here
 			// perhaps panic
-			t.AddTag("k0", "v0")
-			t.AddTag("k1", "v1")
+			t.AddData("k0", "v0")
+			t.AddData("k1", "v1")
 		}
 	
 	Use Event
@@ -29,8 +29,8 @@
 		mycat := cat.Instance()
 		func bizMethod() {
 			e := mycat.NewEvent("Review", "New")
-			e.AddTag("k0", "v0")
-			e.AddTag("k1", "v1")
+			e.AddData("k0", "v0")
+			e.AddData("k1", "v1")
 			e.SetStatus("0")
 			e.Complete()
 		}()

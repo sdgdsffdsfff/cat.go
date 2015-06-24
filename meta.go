@@ -6,7 +6,7 @@ import "fmt"
 
 type Meta interface {
 	SetStatus(Panic)
-	AddTag(string, string)
+	AddData(string, string)
 	GetType() string
 	GetName() string
 	GetStatus() string
@@ -40,7 +40,7 @@ func (m *meta) SetStatus(err Panic) {
 	}
 }
 
-func (m *meta) AddTag(key string, value string) {
+func (m *meta) AddData(key string, value string) {
 	if m.m_data == nil {
 		m.m_data = new(bytes.Buffer)
 		m.m_data.WriteString(key)
