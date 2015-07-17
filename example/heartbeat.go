@@ -21,9 +21,8 @@ func _write(mycat cat.Cat){
 	}()
 
 	h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
-	h.Set("Disk", "Happiness", "0.1")
-	h.Set("Disk", "Tiredness", "0.9")
-	//h.Set("Environment", "PM2.5", "142.0")
+	h.Set("System", "Total", "0.9")
+	h.Set("System", "I/O Thread", "0.1")
 	h.SetStatus("0")
 	h.Complete()
 }
