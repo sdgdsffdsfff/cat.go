@@ -10,7 +10,7 @@
 		mycat := cat.Instance()
 		func bizMethod() {
 			t := mycat.NewTransaction("URL", "Page")
-			defer func {
+			defer func() {
 				p := recover()
 				mycat.LogPanic(p)
 				t.SetStatus(p)
@@ -34,6 +34,14 @@
 			e.SetStatus("0")
 			e.Complete()
 		}()
+
+
+	Use Heartbeat
+		h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
+		h.Set("System", "CPU", "0.3")
+		h.Set("System", "DISK", "0.9")
+		h.SetStatus("0")
+		h.Complete()
 
 	Log Error As Event
 

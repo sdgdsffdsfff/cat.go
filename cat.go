@@ -23,6 +23,7 @@ type cat struct {
 	Tree
 }
 
+//LogError
 func (c *cat) LogError(err error) {
 	if err != nil {
 		e := c.NewEvent("error", err.Error())
