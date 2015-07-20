@@ -5,13 +5,15 @@ type MessageIdFactory interface {
 }
 
 type message_id_factory struct {
-	index   int
-	ceiling int
-	index_l chan int
+	index   uint64
+	ceiling uint64
+	tsh uint64
+	lock chan int
 }
 
 func NewMessageIdFactory() MessageIdFactory {
 	return &message_id_factory{
+		0,
 		0,
 		0,
 		make(chan int, 1),
@@ -21,39 +23,48 @@ func NewMessageIdFactory() MessageIdFactory {
 var MESSAGE_ID_FACTORY MessageIdFactory = NewMessageIdFactory()
 
 func (f *message_id_factory) requestForFreshIds() {
-	f.index, f.ceiling = DOT_MID.Request()
+	f.index, f.ceiling, f.tsh = DOT_MID.Request()
 }
 
 func (f *message_id_factory) Next() MessageId {
-	f.index_l <- 0
+	f.lock <- 0
 	if !(f.index < f.ceiling) {
 		f.requestForFreshIds();
 	}
 	index := f.index
+	tsh := f.tsh
 	f.index++
-	<-f.index_l
+	<-f.lock
 	next := NewMessageId()
 	next.SetIndex(index)
+	next.SetTsh(tsh)
 	return next
 }
 
 type MessageId interface {
 	Encodable
-	SetIndex(index int)
+	SetIndex(index uint64)
+	SetTsh(tsh uint64)
 }
 
 type message_id struct {
 	Header
-	index int
+	index uint64
+	tsh uint64
 }
 
 func NewMessageId() MessageId {
 	return &message_id{
 		NewHeader(),
-		-1,
+		0,
+		0,
 	}
 }
 
-func (mid *message_id) SetIndex(index int) {
+func (mid *message_id) SetIndex(index uint64) {
 	mid.index = index
+}
+
+func (mid *message_id) SetTsh(tsh uint64) {
+	mid.tsh = tsh
 }

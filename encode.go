@@ -5,7 +5,6 @@ import "strconv"
 import "encoding/binary"
 import "strings"
 import "fmt"
-import "time"
 
 type Encodable interface {
 	Encode(*bytes.Buffer)
@@ -120,9 +119,9 @@ func (mid message_id) Encode(buf *bytes.Buffer) {
 	buf.WriteString("-")
 	buf.WriteString(iptohex(mid.GetIpAddress()))
 	buf.WriteString("-")
-	buf.WriteString(strconv.FormatInt(time.Now().Unix()/3600, 10))
+	buf.WriteString(fmt.Sprintf("%d", mid.tsh))
 	buf.WriteString("-")
-	buf.WriteString(strconv.Itoa(mid.index))
+	buf.WriteString(fmt.Sprintf("%d", mid.index))
 }
 
 func int32tobytes(i int32) []byte {
