@@ -4,7 +4,7 @@ import "time"
 import "bytes"
 import "net"
 
-var Mchan chan Message = make(chan Message, 1<<24)
+var Mchan chan Message = make(chan Message, 1<<10)
 var MaxBatchSize int = 1 << 8
 
 //sender_run is internally used and only called by Cat_init_if.
@@ -59,9 +59,15 @@ func sender_encode(messages <-chan Message, count int) {
 }
 
 func sender_send(datas <-chan []byte) {
-	conn, _ := net.Dial("tcp", "10.2.6.99:2280")
+	conn, err := net.Dial("tcp", "10.2.6.99:2280")
+	if err != nil {
+		return
+	}
 	defer conn.Close()
 	for data := range datas {
-		conn.Write(data)
+		_, err := conn.Write(data)
+		if err != nil {
+			return
+		}
 	}
 }
