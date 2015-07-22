@@ -10,7 +10,7 @@ Package cat works as a client for Central Application Tracking(CAT).
 	cat.CAT_HOST = cat.UAT         //or "http://cat.uat.qa.nt.ctripcorp.com"
 ###Use Transaction
 	mycat := cat.Instance()
-	func bizMethod() {
+	func() {
 		t := mycat.NewTransaction("URL", "Page")
 		defer func() {
 			err := recover()
