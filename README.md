@@ -1,15 +1,14 @@
-PACKAGE DOCUMENTATION
+#How to use cat.go
+Package cat works as a client for Central Application Tracking(CAT).
 
-package cat
-
-    Package cat works as a client for Central Application Tracking(CAT).
-
-    Import
-
+###Import
 	import cat "/your/path/to/cat"
-
-    Use Transaction
-
+###Config
+	cat.DOMAIN   = "your appid"  
+	cat.HOSTNAME = "your hostname" //optional  
+	cat.IP       = "your hostip"   //optional  
+	cat.CAT_HOST = cat.UAT         //or "http://cat.uat.qa.nt.ctripcorp.com"  
+###Use Transaction
 	mycat := cat.Instance()
 	func bizMethod() {
 		t := mycat.NewTransaction("URL", "Page")
@@ -22,10 +21,8 @@ package cat
 		t.Add("k1", "v1")
 		t.Add("k2", "v2")
 		t.Add("k3", "v3")
-	}
-
-    Use Event
-
+	}()
+###Use Event
 	mycat := cat.Instance()
 	func bizMethod() {
 		e := mycat.NewEvent("Review", "New")
@@ -34,60 +31,18 @@ package cat
 		e.SetStatus("0")
 		e.Complete()
 	}()
-
-VARIABLES
-
-    var LF = "\n"
-    
-    var TAB = "\t"
-    
-    var Tchan chan Transaction = make(chan Transaction)
-
-FUNCTIONS
-
-    func Cat_init_if()  
-        Cat_init_if initialize cat.go, which must be down before any other  
-        operations, for which Instance called it automatically.  
-    
-    func Instance() interface{}  
-        As it's not recommended to apply thread local in go, apps with cat.go  
-        have to call Instance, keep and manage the instance returned properly.  
-    
-    func Invoke(f Function, values ...interface{}) ([]reflect.Value, error)  
-        Invoke panics if f's Kind is not Func. As accurate validation is skipped  
-        for performance concern, don't call Invoke unless you know what you're  
-        doing.
-
-TYPES
-
-    type Function interface{}
-
-    type Message interface {  
-        SetStatus(Status)  
-        Add(string, string)  
-        GetType() string  
-        GetName() string  
-        GetStatus() string  
-        GetTimestamp() time.Time  
-        GetData() []byte  
-    }
-
-    func NewMessage(t string, n string) Message
-
-    type Status interface{}
-
-    type Transaction interface {  
-        Message  
-        AddChild(Message) Transaction  
-        Complete()  
-    }
-
-    func NewTransaction(t string, n string, f Function) Transaction
-
-    type Tree interface {  
-         NewTransaction(string, string) Transaction  
-    }
-
-    func NewTree() Tree
-
-
+###Use Heartbeat
+	mycat := cat.Instance()
+	func bizMethod() {
+		h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
+		h.Set("System", "CPU", "0.3")
+		h.Set("System", "DISK", "0.9")
+		h.SetStatus("0")
+		h.Complete()
+	}()
+###Log Error As Event
+	mycat := cat.Instance()
+	func bizMethod() {
+		err, ret := someMethod()
+		mycat.LogError(err)
+	}()
