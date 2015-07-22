@@ -24,7 +24,7 @@ var (
 	IP string = ""
 )
 
-func cat_config_init_if(){
+func cat_config_init(){
 	var err error
 	var resp *http.Response
 	var metaServer string
