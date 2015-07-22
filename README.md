@@ -8,6 +8,14 @@ package cat
 
 	import cat "/your/path/to/cat"
 
+    Config
+
+        cat.DOMAIN   = "your appid"  
+        cat.HOSTNAME = "your hostname" //optional  
+        cat.IP       = "your hostip"   //optional  
+        cat.CAT_HOST = cat.UAT         // or "http://cat.uat.qa.nt.ctripcorp.com"  
+
+
     Use Transaction
 
 	mycat := cat.Instance()
@@ -35,14 +43,6 @@ package cat
 		e.Complete()
 	}()
 
-VARIABLES
-
-    var LF = "\n"
-    
-    var TAB = "\t"
-    
-    var Tchan chan Transaction = make(chan Transaction)
-
 FUNCTIONS
 
     func Cat_init_if()  
@@ -52,42 +52,3 @@ FUNCTIONS
     func Instance() interface{}  
         As it's not recommended to apply thread local in go, apps with cat.go  
         have to call Instance, keep and manage the instance returned properly.  
-    
-    func Invoke(f Function, values ...interface{}) ([]reflect.Value, error)  
-        Invoke panics if f's Kind is not Func. As accurate validation is skipped  
-        for performance concern, don't call Invoke unless you know what you're  
-        doing.
-
-TYPES
-
-    type Function interface{}
-
-    type Message interface {  
-        SetStatus(Status)  
-        Add(string, string)  
-        GetType() string  
-        GetName() string  
-        GetStatus() string  
-        GetTimestamp() time.Time  
-        GetData() []byte  
-    }
-
-    func NewMessage(t string, n string) Message
-
-    type Status interface{}
-
-    type Transaction interface {  
-        Message  
-        AddChild(Message) Transaction  
-        Complete()  
-    }
-
-    func NewTransaction(t string, n string, f Function) Transaction
-
-    type Tree interface {  
-         NewTransaction(string, string) Transaction  
-    }
-
-    func NewTree() Tree
-
-
