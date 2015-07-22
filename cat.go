@@ -26,7 +26,7 @@ type cat struct {
 //LogError
 func (c *cat) LogError(err error) {
 	if err != nil {
-		e := c.NewEvent("error", err.Error())
+		e := c.NewEvent("Error", err.Error())
 		e.SetStatus("ERROR")
 		e.Complete()
 	}
@@ -34,7 +34,7 @@ func (c *cat) LogError(err error) {
 
 func (c *cat) LogPanic(err Panic) {
 	if err != nil {
-		e := c.NewEvent("panic", fmt.Sprintf("%v", err))
+		e := c.NewEvent("Error", fmt.Sprintf("%v", err))
 		e.SetStatus("ERROR")
 		e.Complete()
 	}
