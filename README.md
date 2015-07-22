@@ -21,7 +21,7 @@ Package cat works as a client for Central Application Tracking(CAT).
 		t.Add("k1", "v1")
 		t.Add("k2", "v2")
 		t.Add("k3", "v3")
-	}
+	}()
 ###Use Event
 	mycat := cat.Instance()
 	func bizMethod() {
@@ -32,15 +32,17 @@ Package cat works as a client for Central Application Tracking(CAT).
 		e.Complete()
 	}()
 ###Use Heartbeat
+	mycat := cat.Instance()
+	func bizMethod() {
 		h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
 		h.Set("System", "CPU", "0.3")
 		h.Set("System", "DISK", "0.9")
 		h.SetStatus("0")
 		h.Complete()
+	}()
 ###Log Error As Event
-		mycat := cat.Instance()
-		func bizMethod() {
-			err, ret := someMethod()
-			mycat.LogError(err)
-		}()
-	
+	mycat := cat.Instance()
+	func bizMethod() {
+		err, ret := someMethod()
+		mycat.LogError(err)
+	}()
