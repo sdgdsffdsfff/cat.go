@@ -7,16 +7,16 @@ import (
 )
 
 var (
-	Mchan        chan Message
-	MaxBatchSize int
-	p            pool.Pool
+	sender_transaction_channel        chan Message
+	sender_max_batch_size int
+	sender_pool          pool.Pool
 )
 
 //cat_sender_init is internally used and only called by Cat_init_if.
 func cat_sender_init() {
-	Mchan = make(chan Message, 1<<10)
-	MaxBatchSize = 1 << 8
-	p, _ = pool.NewBlockingPool(3, 3, CONN_FACTORY)
+	sender_transaction_channel = make(chan Message, 1<<10)
+	sender_max_batch_size = 1 << 8
+	sender_pool, _ = pool.NewBlockingPool(3, 3, CONN_FACTORY)
 	go sender_run()
 }
 
@@ -31,12 +31,12 @@ func sender_run() {
 }
 
 func sender_collect() bool {
-	messages := make(chan Message, MaxBatchSize)
+	messages := make(chan Message, sender_max_batch_size)
 	var count = 0
 collect:
-	for count < MaxBatchSize {
+	for count < sender_max_batch_size {
 		select {
-		case message := <-Mchan:
+		case message := <-sender_transaction_channel:
 			messages <- message
 			count++
 		default:
@@ -71,7 +71,7 @@ func sender_encode(messages <-chan Message, count int) {
 }
 
 func sender_send(datas <-chan []byte) {
-	conn, err := p.Get()
+	conn, err := sender_pool.Get()
 	if err != nil {
 		return
 	}

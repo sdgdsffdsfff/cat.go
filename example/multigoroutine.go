@@ -6,6 +6,7 @@ import "runtime"
 func main(){
 	runtime.GOMAXPROCS(4)
 
+	cat.CAT_HOST = cat.FAT
 	go write()
 	go write()
 	go write()
