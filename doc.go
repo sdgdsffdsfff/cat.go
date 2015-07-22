@@ -10,7 +10,7 @@
 		cat.DOMAIN   = "your appid"
 		cat.HOSTNAME = "your hostname" //optional
 		cat.IP       = "your hostip"   //optional
-		cat.CAT_HOST = cat.UAT         // or "http://cat.uat.qa.nt.ctripcorp.com"
+		cat.CAT_HOST = cat.UAT         //or "http://cat.uat.qa.nt.ctripcorp.com"
 
 	Use Transaction
 

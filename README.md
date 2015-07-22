@@ -7,7 +7,7 @@ Package cat works as a client for Central Application Tracking(CAT).
 	cat.DOMAIN   = "your appid"  
 	cat.HOSTNAME = "your hostname" //optional  
 	cat.IP       = "your hostip"   //optional  
-	cat.CAT_HOST = cat.UAT         // or "http://cat.uat.qa.nt.ctripcorp.com"  
+	cat.CAT_HOST = cat.UAT         //or "http://cat.uat.qa.nt.ctripcorp.com"  
 ###Use Transaction
 	mycat := cat.Instance()
 	func bizMethod() {
