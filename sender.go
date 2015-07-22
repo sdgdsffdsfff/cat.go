@@ -3,14 +3,24 @@ package cat
 import "time"
 import "bytes"
 import "net"
+import "github.com/phyxdown/ghost/pool"
 
-var Mchan chan Message = make(chan Message, 1<<10)
-var MaxBatchSize int = 1 << 8
+var (
+	Mchan        chan Message = make(chan Message, 1<<10)
+	MaxBatchSize int          = 1 << 8
+	p            pool.Pool
+)
 
 //sender_run is internally used and only called by Cat_init_if.
 //sender_run call sender_collect repeatedly.
 //Basically, only 1 goroutine keeps this function.
 func sender_run() {
+	Mchan = make(chan Message, 1<<10)
+	MaxBatchSize = 1 << 8
+	factory := func() (net.Conn, error) {
+		return net.Dial("tcp", "10.2.6.99:2280")
+	}
+	p, _ = pool.NewBlockingPool(3, 3, factory)
 	for {
 		if sender_collect() {
 			time.Sleep(1 << 16 * time.Microsecond)
@@ -59,7 +69,7 @@ func sender_encode(messages <-chan Message, count int) {
 }
 
 func sender_send(datas <-chan []byte) {
-	conn, err := net.Dial("tcp", "10.2.6.99:2280")
+	conn, err := p.Get()
 	if err != nil {
 		return
 	}
