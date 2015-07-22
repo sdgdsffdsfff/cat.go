@@ -14,10 +14,11 @@ type header struct {
 }
 
 func NewHeader() Header {
+
 	return header{
-		"555555",
-		"DST51752",
-		"192.168.141.131",
+		DOMAIN,
+		HOSTNAME,
+		IP,
 	}
 }
 
