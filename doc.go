@@ -27,7 +27,7 @@
 			// perhaps panic
 			t.AddData("k0", "v0")
 			t.AddData("k1", "v1")
-		}
+		}()
 
 	Use Event
 
@@ -44,11 +44,15 @@
 
 
 	Use Heartbeat
-		h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
-		h.Set("System", "CPU", "0.3")
-		h.Set("System", "DISK", "0.9")
-		h.SetStatus("0")
-		h.Complete()
+
+		mycat := cat.Instance()
+		func bizMethod() {
+			h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
+			h.Set("System", "CPU", "0.3")
+			h.Set("System", "DISK", "0.9")
+			h.SetStatus("0")
+			h.Complete()
+		}()
 
 	Log Error As Event
 
