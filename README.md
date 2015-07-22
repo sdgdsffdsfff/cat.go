@@ -31,12 +31,16 @@ Package cat works as a client for Central Application Tracking(CAT).
 		e.SetStatus("0")
 		e.Complete()
 	}()
+###Use Heartbeat
+		h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
+		h.Set("System", "CPU", "0.3")
+		h.Set("System", "DISK", "0.9")
+		h.SetStatus("0")
+		h.Complete()
+###Log Error As Event
+		mycat := cat.Instance()
+		func bizMethod() {
+			err, ret := someMethod()
+			mycat.LogError(err)
+		}()
 	
-###FUNCTIONS
-	func Cat_init_if()  
-	//Cat_init_if initialize cat.go, which must be down before any other  
-        //operations, for which Instance called it automatically.  
-        
-        func Instance() interface{}  
-        //As it's not recommended to apply thread local in go, apps with cat.go  
-        //have to call Instance, keep and manage the instance returned properly.  
