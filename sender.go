@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	sender_transaction_channel        chan Message
-	sender_max_batch_size int
-	sender_pool          pool.Pool
+	sender_transaction_channel chan Message
+	sender_max_batch_size      int
+	sender_pool                pool.Pool
 )
 
 //cat_sender_init is internally used and only called by Cat_init_if.
@@ -30,6 +30,7 @@ func sender_run() {
 	}
 }
 
+//False returned when it seems to be busy.
 func sender_collect() bool {
 	messages := make(chan Message, sender_max_batch_size)
 	var count = 0
