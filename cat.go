@@ -32,6 +32,7 @@ func (c *cat) LogError(err error) {
 	}
 }
 
+//LogPanic
 func (c *cat) LogPanic(err Panic) {
 	if err != nil {
 		e := c.NewEvent("Error", fmt.Sprintf("%v", err))
