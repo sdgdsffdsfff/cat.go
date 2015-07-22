@@ -1,30 +1,30 @@
 package cat
 
 import (
-	. "os"
-	"strings"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	. "os"
+	"strings"
 )
 
 //Configs about cat is required to be correct.
-//The client is able to complement some of the configs, 
+//The client is able to complement some of the configs,
 //but is incapable of validation.
-//Fortunately invalid configs causes failure of cat's init, 
+//Fortunately invalid configs causes failure of cat's init,
 //thus users can be immediately aware of config fault.
 var (
-	PROD string = "http://cat.ctripcorp.com"
-	FAT string = "http://cat.fws.qa.nt.ctripcorp.com"
-	UAT string = "http://cat.uat.qa.nt.ctripcorp.com"
-	CAT_HOST string = FAT
+	PROD        string = "http://cat.ctripcorp.com"
+	FAT         string = "http://cat.fws.qa.nt.ctripcorp.com"
+	UAT         string = "http://cat.uat.qa.nt.ctripcorp.com"
+	CAT_HOST    string = FAT
 	CAT_SERVERS []string
-	DOMAIN string = "900407"
-	HOSTNAME string = ""
-	IP string = ""
+	DOMAIN      string = "900407"
+	HOSTNAME    string = ""
+	IP          string = ""
 )
 
-func cat_config_init(){
+func cat_config_init() {
 	var err error
 	var resp *http.Response
 	var metaServer string
