@@ -75,9 +75,6 @@ func sender_send(datas <-chan []byte) {
 	}
 	defer conn.Close()
 	for data := range datas {
-		_, err := conn.Write(data)
-		if err != nil {
-			return
-		}
+		conn.Write(data)
 	}
 }
