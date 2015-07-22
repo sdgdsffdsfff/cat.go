@@ -46,6 +46,7 @@ func (c *cat) LogPanic(err Panic) {
 func Cat_init_if() {
 	cat_lock <- 0
 	if !cat_initialized {
+		cat_config_init_if()
 		go sender_run()
 		cat_initialized = true
 	}
