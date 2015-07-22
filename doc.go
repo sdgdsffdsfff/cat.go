@@ -31,8 +31,6 @@
 
 	Use Event
 
-		//Atomic Event is not supported yet.
-
 		mycat := cat.Instance()
 		func() {
 			e := mycat.NewEvent("Review", "New")

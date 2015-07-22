@@ -49,6 +49,7 @@ func Cat_init_if() {
 	if !cat_initialized {
 		cat_config_init()
 		cat_sender_init()
+		cat_aggregator_init()
 		cat_initialized = true
 	}
 	<-cat_lock

@@ -50,7 +50,7 @@ func (this *tree) flush_t(t Transaction) {
 		}
 	}
 	if current == 0 {
-		Mchan <- this.root
+		sender_transaction_channel <- this.root
 	}
 }
 
@@ -58,7 +58,7 @@ func (this *tree) flush(m Message) {
 	stack := this.stack
 	current := len(stack) - 1
 	if current == -1 {
-		Mchan <- m
+		aggregator_message_channel <- m
 	} else {
 		stack[current].AddChild(m)
 	}
