@@ -4,15 +4,15 @@ Package cat works as a client for Central Application Tracking(CAT).
 ###Import
 	import cat "/your/path/to/cat"
 ###Config
-	cat.DOMAIN   = "your appid"  
-	cat.HOSTNAME = "your hostname" //optional  
-	cat.IP       = "your hostip"   //optional  
-	cat.CAT_HOST = cat.UAT         //or "http://cat.uat.qa.nt.ctripcorp.com"  
+	cat.DOMAIN   = "your appid"
+	cat.HOSTNAME = "your hostname" //optional
+	cat.IP       = "your hostip"   //optional
+	cat.CAT_HOST = cat.UAT         //or "http://cat.uat.qa.nt.ctripcorp.com"
 ###Use Transaction
 	mycat := cat.Instance()
-	func bizMethod() {
+	func() {
 		t := mycat.NewTransaction("URL", "Page")
-		defer func {
+		defer func() {
 			err := recover()
 			t.SetStatus(err)
 			t.Complete()
@@ -24,7 +24,7 @@ Package cat works as a client for Central Application Tracking(CAT).
 	}()
 ###Use Event
 	mycat := cat.Instance()
-	func bizMethod() {
+	func() {
 		e := mycat.NewEvent("Review", "New")
 		e.Add("id", 12345)
 		e.Add("user", "john")
@@ -33,7 +33,7 @@ Package cat works as a client for Central Application Tracking(CAT).
 	}()
 ###Use Heartbeat
 	mycat := cat.Instance()
-	func bizMethod() {
+	func() {
 		h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
 		h.Set("System", "CPU", "0.3")
 		h.Set("System", "DISK", "0.9")
@@ -42,7 +42,7 @@ Package cat works as a client for Central Application Tracking(CAT).
 	}()
 ###Log Error As Event
 	mycat := cat.Instance()
-	func bizMethod() {
+	func() {
 		err, ret := someMethod()
 		mycat.LogError(err)
 	}()

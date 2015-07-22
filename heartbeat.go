@@ -48,12 +48,12 @@ func (h *heartbeat) Complete() {
 
 type status struct {
 	Timestamp  string       `xml:"timestamp,attr"`
-	Runtime *runtime `xml:"runtime"`
-	Os *os `xml:"os"`
-	Disk *disk `xml:"disk"`
-	Memory *memory `xml:"memory"`
-	Thread *thread `xml:"thread"`
-	Message *message `xml:"message"`
+	Runtime    *runtime     `xml:"runtime"`
+	Os         *os          `xml:"os"`
+	Disk       *disk        `xml:"disk"`
+	Memory     *memory      `xml:"memory"`
+	Thread     *thread      `xml:"thread"`
+	Message    *message     `xml:"message"`
 	Extensions []*extension `xml:"extension"`
 }
 
@@ -81,7 +81,7 @@ func newstatus() *status {
 				"/", "261621313536", "201279385600", "198622265344",
 			},
 		}, &memory{
-			"91889664", "75637312", "8793096", &gc{"Gen 0", "1",},
+			"91889664", "75637312", "8793096", &gc{"Gen 0", "1"},
 		},
 		&thread{
 			"34", "34", &dump{},
@@ -94,20 +94,20 @@ func newstatus() *status {
 }
 
 type runtime struct {
-	StartTime string `xml:"start-time,attr"`
-	UpTime string `xml:"up-time,attr"`
+	StartTime   string `xml:"start-time,attr"`
+	UpTime      string `xml:"up-time,attr"`
 	JavaVersion string `xml:"java-version,attr"`
-	UserName string `xml:"user-name,attr"`
-	UserDir string `xml:"user-dir"`
+	UserName    string `xml:"user-name,attr"`
+	UserDir     string `xml:"user-dir"`
 }
 
 type os struct {
-	Name string `xml:"name,attr"`
-	Arch string `xml:"arch,attr"`
-	Version string `xml:"version,attr"`
+	Name                string `xml:"name,attr"`
+	Arch                string `xml:"arch,attr"`
+	Version             string `xml:"version,attr"`
 	AvailableProcessors string `xml:"available-processors,attr"`
-	SystemLoadAverage string `xml:"system-load-average,attr"`
-	ProcessTime string `xml:"process-time,attr"`
+	SystemLoadAverage   string `xml:"system-load-average,attr"`
+	ProcessTime         string `xml:"process-time,attr"`
 	TotalPhysicalMemory string `xml:"total-physical-memory,attr"`
 	//AssembliesLoad string `xml:"assemblies-load,attr"`
 	//ClassLoad string `xml:"class-loaded,attr"`
@@ -118,38 +118,36 @@ type disk struct {
 }
 
 type diskvolume struct {
-	Id string `xml:"id,attr"`
-	Total string `xml:"total,attr"`
-	Free string `xml:"free,attr"`
+	Id     string `xml:"id,attr"`
+	Total  string `xml:"total,attr"`
+	Free   string `xml:"free,attr"`
 	Usable string `xml:"usable,attr"`
 }
 
 type memory struct {
 	PrivateMemorySize string `xml:"private-memory-size,attr"`
-	WorkingSetSize string `xml:"working-set-size,attr"`
-	HeapTotalMemory string `xml:"heap-total-memory,attr"`
-	Gc *gc `xml:"gc"`
+	WorkingSetSize    string `xml:"working-set-size,attr"`
+	HeapTotalMemory   string `xml:"heap-total-memory,attr"`
+	Gc                *gc    `xml:"gc"`
 }
-
 
 type gc struct {
-	Name string `xml:"name,attr"`
+	Name  string `xml:"name,attr"`
 	Count string `xml:"count,attr"`
 }
-
 
 type thread struct {
-	Count string `xml:"count,attr"`
+	Count             string `xml:"count,attr"`
 	TotalStartedCount string `xml:"total-started-count,attr"`
-	Dump *dump `xml:"dump"`
+	Dump              *dump  `xml:"dump"`
 }
 
-type dump struct {}
+type dump struct{}
 
 type message struct {
-	Produced string `xml:"produced,attr"`
+	Produced   string `xml:"produced,attr"`
 	Overflowed string `xml:"overflowed,attr"`
-	Bytes string `xml:"bytes,attr"`
+	Bytes      string `xml:"bytes,attr"`
 }
 
 type extension struct {
@@ -175,5 +173,3 @@ func _extensionDetail(id string, value string) extensionDetail {
 		value,
 	}
 }
-
-

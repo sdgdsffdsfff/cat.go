@@ -1,9 +1,9 @@
 package cat
 
 import (
-	"time"
 	"bytes"
 	"github.com/phyxdown/ghost/pool"
+	"time"
 )
 
 var (

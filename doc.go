@@ -15,7 +15,7 @@
 	Use Transaction
 
 		mycat := cat.Instance()
-		func bizMethod() {
+		func() {
 			t := mycat.NewTransaction("URL", "Page")
 			defer func() {
 				p := recover()
@@ -34,7 +34,7 @@
 		//Atomic Event is not supported yet.
 
 		mycat := cat.Instance()
-		func bizMethod() {
+		func() {
 			e := mycat.NewEvent("Review", "New")
 			e.AddData("k0", "v0")
 			e.AddData("k1", "v1")
@@ -46,7 +46,7 @@
 	Use Heartbeat
 
 		mycat := cat.Instance()
-		func bizMethod() {
+		func() {
 			h := mycat.NewHeartbeat("Heartbeat", "192.168.141.131")
 			h.Set("System", "CPU", "0.3")
 			h.Set("System", "DISK", "0.9")
@@ -57,7 +57,7 @@
 	Log Error As Event
 
 		mycat := cat.Instance()
-		func bizMethod() {
+		func() {
 			err, ret := someMethod()
 			mycat.LogError(err)
 		}()

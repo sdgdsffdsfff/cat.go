@@ -7,8 +7,8 @@ type MessageIdFactory interface {
 type message_id_factory struct {
 	index   uint64
 	ceiling uint64
-	tsh uint64
-	lock chan int
+	tsh     uint64
+	lock    chan int
 }
 
 func NewMessageIdFactory() MessageIdFactory {
@@ -29,7 +29,7 @@ func (f *message_id_factory) requestForFreshIds() {
 func (f *message_id_factory) Next() MessageId {
 	f.lock <- 0
 	if !(f.index < f.ceiling) {
-		f.requestForFreshIds();
+		f.requestForFreshIds()
 	}
 	index := f.index
 	tsh := f.tsh
@@ -50,7 +50,7 @@ type MessageId interface {
 type message_id struct {
 	Header
 	index uint64
-	tsh uint64
+	tsh   uint64
 }
 
 func NewMessageId() MessageId {
