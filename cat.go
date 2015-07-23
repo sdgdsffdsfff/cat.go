@@ -11,6 +11,8 @@ var cat_initialized bool = false
 type Cat interface {
 	//Tree provides methods to create different kinds of messages
 	Tree
+	//Create a new simple Event without tags.
+	LogEvent(t string, n string)
 	//Create a new Event whose type is error and status is ERROR,
 	//nil is ignored
 	LogError(e error)
@@ -21,6 +23,13 @@ type Cat interface {
 
 type cat struct {
 	Tree
+}
+
+//LogEvent
+func (c *cat) LogEvent(t string, n string) {
+	e := c.NewEvent(t, n)
+	e.SetStatus("0")
+	e.Complete()
 }
 
 //LogError

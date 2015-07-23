@@ -1,37 +1,23 @@
 package cat
 
-//import "fmt"
-import "syscall"
-import . "os"
-import "time"
-import "encoding/binary"
+import (
+	"syscall"
+	. "os"
+	"io"
+	"time"
+	"encoding/binary"
+)
 
-type Dotmid interface {
-	Request() (floor uint64, ceiling uint64, tsh uint64)
-}
-
-type dot_mid struct{}
-
-const dotmidFilename = "/home/phyxdown/.mid"
-
-var DOT_MID Dotmid = NewDotmid()
-
-func NewDotmid() Dotmid {
-	return &dot_mid{}
-}
-
-func (d *dot_mid) Request() (floor uint64, ceiling uint64, tsh uint64) {
-	file, err := OpenFile(dotmidFilename, O_RDWR, ModeAppend)
+func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64) {
+	file, err := OpenFile(TEMPFILE, O_CREATE|O_RDWR, 0664)
 	if err != nil {
-		//fmt.Println("#1 ", err)
 		return 0, 0, 0
 	}
 	share := make([]byte, 16)
 	syscall.Flock(int(file.Fd()), syscall.LOCK_EX)
 	tsh = uint64(time.Now().Unix() / 3600)
 	n, err := file.Read(share)
-	if err != nil {
-		//fmt.Println("#2 ", n, err)
+	if err != nil && err != io.EOF{
 		return 0, 0, 0
 	}
 	if n == 16 {
@@ -59,21 +45,16 @@ func (d *dot_mid) Request() (floor uint64, ceiling uint64, tsh uint64) {
 		binary.BigEndian.PutUint64(buf, uint64(ceiling))
 		n, err = file.WriteAt(buf, 0)
 		if err != nil {
-			//fmt.Println("#3 ", n, err)
 			return 0, 0, 0
 		}
-
 		binary.BigEndian.PutUint64(buf, uint64(tsh))
 		n, err = file.WriteAt(buf, 8)
 		if err != nil {
-			//fmt.Println("#4 ", n, err)
 			return 0, 0, 0
 		}
 	} else {
-		//fmt.Println(".mid file is probably tampered.")
 		return 0, 0, 0
 	}
 	syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
-	//fmt.Printf("%d %d %d\n", floor, ceiling, tsh)
 	return floor, ceiling, tsh
 }
