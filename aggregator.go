@@ -2,7 +2,6 @@ package cat
 
 import (
 	"time"
-	"fmt"
 )
 
 var (
@@ -32,7 +31,6 @@ collect:
 	for count < aggregator_max_batch_size {
 		select {
 		case message := <-aggregator_message_channel:
-			fmt.Println("heh")
 			messages <- message
 			count++
 		default:
