@@ -1,7 +1,6 @@
 package cat
 
 import (
-	"fmt"
 	"syscall"
 	. "os"
 	"io"
@@ -9,22 +8,22 @@ import (
 	"encoding/binary"
 )
 
-type Dotmid interface {
+type Dotcat interface {
 	Request() (floor uint64, ceiling uint64, tsh uint64)
 }
 
-type dot_mid struct{}
+type dot_cat struct{}
 
-const dotmidFilename = ".cat"
+const dotcatFilename = ".cat"
 
-var DOT_MID Dotmid = NewDotmid()
+var DOT_MID Dotcat = NewDotcat()
 
-func NewDotmid() Dotmid {
-	return &dot_mid{}
+func NewDotcat() Dotcat {
+	return &dot_cat{}
 }
 
-func (d *dot_mid) Request() (floor uint64, ceiling uint64, tsh uint64) {
-	file, err := OpenFile(dotmidFilename, O_CREATE|O_RDWR, 0664)
+func (d *dot_cat) Request() (floor uint64, ceiling uint64, tsh uint64) {
+	file, err := OpenFile(dotcatFilename, O_CREATE|O_RDWR, 0664)
 	if err != nil {
 		return 0, 0, 0
 	}
@@ -62,17 +61,15 @@ func (d *dot_mid) Request() (floor uint64, ceiling uint64, tsh uint64) {
 		if err != nil {
 			return 0, 0, 0
 		}
-
 		binary.BigEndian.PutUint64(buf, uint64(tsh))
 		n, err = file.WriteAt(buf, 8)
 		if err != nil {
 			return 0, 0, 0
 		}
 	} else {
-		fmt.Println(".mid file is probably tampered.")
+		//println(".cat file is probably tampered.")
 		return 0, 0, 0
 	}
 	syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
-	fmt.Printf("%d %d %d\n", floor, ceiling, tsh)
 	return floor, ceiling, tsh
 }
