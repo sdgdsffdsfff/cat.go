@@ -22,6 +22,7 @@ var (
 	DOMAIN      string = "900407"
 	HOSTNAME    string = ""
 	IP          string = ""
+	TEMPFILE    string = ".cat"
 )
 
 func cat_config_init() {

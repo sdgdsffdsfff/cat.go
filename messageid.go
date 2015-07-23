@@ -23,7 +23,7 @@ func NewMessageIdFactory() MessageIdFactory {
 var MESSAGE_ID_FACTORY MessageIdFactory = NewMessageIdFactory()
 
 func (f *message_id_factory) requestForFreshIds() {
-	f.index, f.ceiling, f.tsh = DOT_MID.Request()
+	f.index, f.ceiling, f.tsh = cat_new_mids()
 }
 
 func (f *message_id_factory) Next() MessageId {

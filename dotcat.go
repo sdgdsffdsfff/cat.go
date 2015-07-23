@@ -8,22 +8,8 @@ import (
 	"encoding/binary"
 )
 
-type Dotcat interface {
-	Request() (floor uint64, ceiling uint64, tsh uint64)
-}
-
-type dot_cat struct{}
-
-const dotcatFilename = ".cat"
-
-var DOT_MID Dotcat = NewDotcat()
-
-func NewDotcat() Dotcat {
-	return &dot_cat{}
-}
-
-func (d *dot_cat) Request() (floor uint64, ceiling uint64, tsh uint64) {
-	file, err := OpenFile(dotcatFilename, O_CREATE|O_RDWR, 0664)
+func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64) {
+	file, err := OpenFile(TEMPFILE, O_CREATE|O_RDWR, 0664)
 	if err != nil {
 		return 0, 0, 0
 	}
@@ -67,7 +53,6 @@ func (d *dot_cat) Request() (floor uint64, ceiling uint64, tsh uint64) {
 			return 0, 0, 0
 		}
 	} else {
-		//println(".cat file is probably tampered.")
 		return 0, 0, 0
 	}
 	syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
