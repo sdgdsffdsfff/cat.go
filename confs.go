@@ -54,28 +54,9 @@ func cat_config_init() {
 
 	if IP == "" {
 		IP = cat_get_ip()
-		println(IP)
 	}
 }
 
 func cat_get_ip() string{
-	ifs, err := net.Interfaces()
-	if err != nil {
-		return ""
-	}
-	if len(ifs) < 1 {
-		return ""
-	}
-	ifi, err := net.InterfaceByName(ifs[0].Name)
-	if err != nil {
-		return ""
-	}
-	addrs, err := ifi.Addrs()
-	if err != nil {
-		return ""
-	}
-	if len(addrs) < 1 {
-		return ""
-	}
-	return addrs[0].String()
+	return ""
 }
