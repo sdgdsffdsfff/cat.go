@@ -1,7 +1,6 @@
 package cat
 
 import (
-	"net"
 	"fmt"
 	"io/ioutil"
 	"net/http"
