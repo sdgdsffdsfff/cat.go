@@ -2,7 +2,7 @@ package cat
 
 import (
 	"bytes"
-	"github.com/phyxdown/ghost/pool"
+	"github.com/ctripcorp/ghost/pool"
 	"time"
 )
 
