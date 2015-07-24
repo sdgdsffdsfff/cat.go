@@ -46,12 +46,12 @@ collect:
 	}
 }
 
-func aggregator_transfer(messages <-chan Message){
+func aggregator_transfer(messages <-chan Message) {
 	t := NewTransaction("_CatMergeTree", "_CatMergeTree", nil)
 	for message := range messages {
 		t.AddChild(message)
 	}
 	t.SetStatus("0")
 	t.Complete()
-	sender_transaction_channel<-t
+	sender_transaction_channel <- t
 }

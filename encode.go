@@ -135,6 +135,9 @@ func iptohex(ip string) string {
 	for i := 0; i < 4; i++ {
 		digit, _ := strconv.Atoi(strs[i])
 		strs[i] = fmt.Sprintf("%x", digit)
+		if len(strs[i]) < 2 {
+			strs[i] = "0" + strs[i]
+		}
 	}
 	return strings.Join(strs, "")
 }

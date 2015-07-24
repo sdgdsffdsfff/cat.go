@@ -52,6 +52,10 @@ func cat_config_init() {
 	}
 
 	if IP == "" {
-		IP = "192.168.141.131"
+		IP = cat_get_ip()
 	}
+}
+
+func cat_get_ip() string {
+	return ""
 }

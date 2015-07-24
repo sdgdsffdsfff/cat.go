@@ -1,11 +1,11 @@
 package cat
 
 import (
-	"syscall"
-	. "os"
-	"io"
-	"time"
 	"encoding/binary"
+	"io"
+	. "os"
+	"syscall"
+	"time"
 )
 
 func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64) {
@@ -17,7 +17,7 @@ func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64) {
 	syscall.Flock(int(file.Fd()), syscall.LOCK_EX)
 	tsh = uint64(time.Now().Unix() / 3600)
 	n, err := file.Read(share)
-	if err != nil && err != io.EOF{
+	if err != nil && err != io.EOF {
 		return 0, 0, 0
 	}
 	if n == 16 {
