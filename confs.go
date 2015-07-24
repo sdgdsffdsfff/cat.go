@@ -56,6 +56,6 @@ func cat_config_init() {
 	}
 }
 
-func cat_get_ip() string{
+func cat_get_ip() string {
 	return ""
 }
