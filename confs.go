@@ -1,6 +1,7 @@
 package cat
 
 import (
+	"net"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -53,6 +54,7 @@ func cat_config_init() {
 
 	if IP == "" {
 		IP = cat_get_ip()
+		println(IP)
 	}
 }
 
