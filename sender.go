@@ -16,7 +16,7 @@ var (
 func cat_sender_init() {
 	sender_transaction_channel = make(chan Message, 1<<10)
 	sender_max_batch_size = 1 << 8
-	sender_pool, _ = pool.NewBlockingPool(3, 3, CONN_FACTORY)
+	sender_pool, _ = pool.NewBlockingPool(1, 1, CONN_FACTORY)
 	go sender_run()
 }
 
