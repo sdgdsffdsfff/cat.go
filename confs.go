@@ -3,8 +3,10 @@ package cat
 import (
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	. "os"
+	"strconv"
 	"strings"
 )
 
@@ -57,5 +59,19 @@ func cat_config_init() {
 }
 
 func cat_get_ip() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return ""
+	}
+	for _, addr := range addrs {
+		add := strings.Split(addr.String(), "/")[0]
+		if add == "127.0.0.1" || add == "::1" {
+			continue
+		}
+		first := strings.Split(add, ".")[0]
+		if _, err := strconv.Atoi(first); err == nil {
+			return add
+		}
+	}
 	return ""
 }
