@@ -7,10 +7,10 @@ import "strings"
 import "fmt"
 
 type Encodable interface {
-	Encode(*bytes.Buffer)
+	Encode(*bytes.Buffer) error
 }
 
-func (t *transaction) Encode(buf *bytes.Buffer) {
+func (t *transaction) Encode(buf *bytes.Buffer) error{
 	if t.children == nil || len(t.children) == 0 {
 		buf.WriteString("A")
 		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))
@@ -55,9 +55,10 @@ func (t *transaction) Encode(buf *bytes.Buffer) {
 		buf.WriteString(TAB)
 		buf.WriteString(LF)
 	}
+	return nil
 }
 
-func (h event) Encode(buf *bytes.Buffer) {
+func (h event) Encode(buf *bytes.Buffer) error{
 	buf.WriteString("E")
 	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
 	buf.WriteString(TAB)
@@ -70,10 +71,11 @@ func (h event) Encode(buf *bytes.Buffer) {
 	buf.Write(h.GetData())
 	buf.WriteString(TAB)
 	buf.WriteString(LF)
+	return nil
 }
 
 //refactor expected.
-func (h heartbeat) Encode(buf *bytes.Buffer) {
+func (h heartbeat) Encode(buf *bytes.Buffer) error{
 	buf.WriteString("H")
 	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
 	buf.WriteString(TAB)
@@ -86,9 +88,10 @@ func (h heartbeat) Encode(buf *bytes.Buffer) {
 	buf.Write(h.GetData())
 	buf.WriteString(TAB)
 	buf.WriteString(LF)
+	return nil
 }
 
-func (h header) Encode(buf *bytes.Buffer) {
+func (h header) Encode(buf *bytes.Buffer) error{
 	buf.WriteString("PT1")
 	buf.WriteString(TAB)
 	buf.WriteString(h.m_domain)
@@ -103,7 +106,8 @@ func (h header) Encode(buf *bytes.Buffer) {
 	buf.WriteString(TAB)
 	buf.WriteString("main")
 	buf.WriteString(TAB)
-	MESSAGE_ID_FACTORY.Next().Encode(buf)
+	mid, err := MESSAGE_ID_FACTORY.Next()
+	mid.Encode(buf)
 	buf.WriteString(TAB)
 	buf.WriteString("null")
 	buf.WriteString(TAB)
@@ -112,9 +116,10 @@ func (h header) Encode(buf *bytes.Buffer) {
 	buf.WriteString("null")
 	buf.WriteString(TAB)
 	buf.WriteString(LF)
+	return err
 }
 
-func (mid message_id) Encode(buf *bytes.Buffer) {
+func (mid message_id) Encode(buf *bytes.Buffer) error{
 	buf.WriteString(mid.GetDomain())
 	buf.WriteString("-")
 	buf.WriteString(iptohex(mid.GetIpAddress()))
@@ -122,6 +127,7 @@ func (mid message_id) Encode(buf *bytes.Buffer) {
 	buf.WriteString(fmt.Sprintf("%d", mid.tsh))
 	buf.WriteString("-")
 	buf.WriteString(fmt.Sprintf("%d", mid.index))
+	return nil
 }
 
 func int32tobytes(i int32) []byte {

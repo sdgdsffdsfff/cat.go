@@ -1,7 +1,7 @@
 package cat
 
 type MessageIdFactory interface {
-	Next() MessageId
+	Next() (MessageId, error)
 }
 
 type message_id_factory struct {
@@ -22,14 +22,16 @@ func NewMessageIdFactory() MessageIdFactory {
 
 var MESSAGE_ID_FACTORY MessageIdFactory = NewMessageIdFactory()
 
-func (f *message_id_factory) requestForFreshIds() {
-	f.index, f.ceiling, f.tsh = cat_new_mids()
+func (f *message_id_factory) requestForFreshIds() (err error){
+	f.index, f.ceiling, f.tsh, err = cat_new_mids()
+	return err
 }
 
-func (f *message_id_factory) Next() MessageId {
+func (f *message_id_factory) Next() (MessageId, error) {
+	var err error = nil
 	f.lock <- 0
 	if !(f.index < f.ceiling) {
-		f.requestForFreshIds()
+		err = f.requestForFreshIds()
 	}
 	index := f.index
 	tsh := f.tsh
@@ -38,7 +40,7 @@ func (f *message_id_factory) Next() MessageId {
 	next := NewMessageId()
 	next.SetIndex(index)
 	next.SetTsh(tsh)
-	return next
+	return next, err
 }
 
 type MessageId interface {

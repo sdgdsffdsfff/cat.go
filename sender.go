@@ -55,9 +55,13 @@ collect:
 
 func sender_encode(messages <-chan Message, count int) {
 	datas := make(chan []byte, count)
+	var err error
 	for message := range messages {
 		buf := bytes.NewBuffer([]byte{0, 0, 0, 0})
-		NewHeader().Encode(buf)
+		err = NewHeader().Encode(buf)
+		if err != nil {
+			continue
+		}
 		message.Encode(buf)
 		load := int32tobytes(int32(buf.Len() - 4))
 		data := buf.Bytes()
