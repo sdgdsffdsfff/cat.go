@@ -9,16 +9,17 @@ import (
 )
 
 func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64) {
+	tsh = uint64(time.Now().Unix() / 3600)
 	file, err := OpenFile(TEMPFILE, O_CREATE|O_RDWR, 0664)
 	if err != nil {
-		return 0, 0, 0
+		return 0, 0, tsh
 	}
+	defer file.Close()
 	share := make([]byte, 16)
 	syscall.Flock(int(file.Fd()), syscall.LOCK_EX)
-	tsh = uint64(time.Now().Unix() / 3600)
 	n, err := file.Read(share)
 	if err != nil && err != io.EOF {
-		return 0, 0, 0
+		return 0, 0, tsh
 	}
 	if n == 16 {
 		var f uint64 = binary.BigEndian.Uint64(share[:8])
@@ -45,15 +46,15 @@ func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64) {
 		binary.BigEndian.PutUint64(buf, uint64(ceiling))
 		n, err = file.WriteAt(buf, 0)
 		if err != nil {
-			return 0, 0, 0
+			return 0, 0, tsh
 		}
 		binary.BigEndian.PutUint64(buf, uint64(tsh))
 		n, err = file.WriteAt(buf, 8)
 		if err != nil {
-			return 0, 0, 0
+			return 0, 0, tsh
 		}
 	} else {
-		return 0, 0, 0
+		return 0, 0, tsh
 	}
 	syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
 	return floor, ceiling, tsh
