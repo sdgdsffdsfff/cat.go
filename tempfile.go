@@ -2,11 +2,11 @@ package cat
 
 import (
 	"encoding/binary"
+	"errors"
 	"io"
 	. "os"
 	"syscall"
 	"time"
-	"errors"
 )
 
 func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64, err error) {

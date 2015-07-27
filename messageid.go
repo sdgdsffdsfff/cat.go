@@ -22,7 +22,7 @@ func NewMessageIdFactory() MessageIdFactory {
 
 var MESSAGE_ID_FACTORY MessageIdFactory = NewMessageIdFactory()
 
-func (f *message_id_factory) requestForFreshIds() (err error){
+func (f *message_id_factory) requestForFreshIds() (err error) {
 	f.index, f.ceiling, f.tsh, err = cat_new_mids()
 	return err
 }
