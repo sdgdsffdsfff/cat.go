@@ -16,6 +16,7 @@ func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64, err error) {
 		return 0, 0, tsh, errors.New("Unable to open temp file")
 	}
 	defer func() {
+		file.Sync()
 		file.Close()
 		syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
 	} ()
