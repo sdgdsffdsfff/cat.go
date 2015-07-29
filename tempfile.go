@@ -15,7 +15,10 @@ func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64, err error) {
 	if err != nil {
 		return 0, 0, tsh, errors.New("Unable to open temp file")
 	}
-	defer file.Close()
+	defer func() {
+		file.Close()
+		syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
+	} ()
 	share := make([]byte, 16)
 	syscall.Flock(int(file.Fd()), syscall.LOCK_EX)
 	n, err := file.Read(share)
@@ -57,6 +60,5 @@ func cat_new_mids() (floor uint64, ceiling uint64, tsh uint64, err error) {
 	} else {
 		return 0, 0, tsh, errors.New("Temp file is herpahs corrupted")
 	}
-	syscall.Flock(int(file.Fd()), syscall.LOCK_UN)
 	return floor, ceiling, tsh, nil
 }
