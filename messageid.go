@@ -1,5 +1,7 @@
 package cat
 
+import "time"
+
 type MessageIdFactory interface {
 	Next() (MessageId, error)
 }
@@ -30,7 +32,7 @@ func (f *message_id_factory) requestForFreshIds() (err error) {
 func (f *message_id_factory) Next() (MessageId, error) {
 	var err error = nil
 	f.lock <- 0
-	if !(f.index < f.ceiling) {
+	if !((f.index < f.ceiling) && f.tsh == uint64(time.Now().Unix() / 3600)) {
 		err = f.requestForFreshIds()
 	}
 	index := f.index
