@@ -5,6 +5,7 @@ import "strconv"
 import "encoding/binary"
 import "strings"
 import "fmt"
+import "time"
 
 type Encodable interface {
 	Encode(*bytes.Buffer) error
@@ -13,7 +14,7 @@ type Encodable interface {
 func (t *transaction) Encode(buf *bytes.Buffer) error {
 	if t.children == nil || len(t.children) == 0 {
 		buf.WriteString("A")
-		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))
+		encodeTime(t.start, buf)
 		buf.WriteString(TAB)
 		buf.WriteString(t.GetType())
 		buf.WriteString(TAB)
@@ -29,7 +30,7 @@ func (t *transaction) Encode(buf *bytes.Buffer) error {
 		buf.WriteString(LF)
 	} else {
 		buf.WriteString("t")
-		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))
+		encodeTime(t.start, buf)
 		buf.WriteString(TAB)
 		buf.WriteString(t.GetType())
 		buf.WriteString(TAB)
@@ -40,7 +41,7 @@ func (t *transaction) Encode(buf *bytes.Buffer) error {
 			child.Encode(buf)
 		}
 		buf.WriteString("T")
-		buf.WriteString(t.end.Format("2006-01-02 15:04:05.999"))
+		encodeTime(t.end, buf)
 		buf.WriteString(TAB)
 		buf.WriteString(t.GetType())
 		buf.WriteString(TAB)
@@ -60,7 +61,7 @@ func (t *transaction) Encode(buf *bytes.Buffer) error {
 
 func (h event) Encode(buf *bytes.Buffer) error {
 	buf.WriteString("E")
-	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
+	encodeTime(h.GetTimestamp(), buf)
 	buf.WriteString(TAB)
 	buf.WriteString(h.GetType())
 	buf.WriteString(TAB)
@@ -77,7 +78,7 @@ func (h event) Encode(buf *bytes.Buffer) error {
 //refactor expected.
 func (h heartbeat) Encode(buf *bytes.Buffer) error {
 	buf.WriteString("H")
-	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
+	encodeTime(h.GetTimestamp(), buf)
 	buf.WriteString(TAB)
 	buf.WriteString(h.GetType())
 	buf.WriteString(TAB)
@@ -146,4 +147,17 @@ func iptohex(ip string) string {
 		}
 	}
 	return strings.Join(strs, "")
+}
+
+func encodeTime(t time.Time, buf *bytes.Buffer) error {
+	ret := t.Format("2006-01-02 15:04:05.999")
+	buf.WriteString(ret)
+	if len(ret) == 22 {
+		buf.WriteString("0")
+	}
+	if len(ret) == 21 {
+		buf.WriteString("0")
+		buf.WriteString("0")
+	}
+	return nil
 }
