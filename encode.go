@@ -6,6 +6,7 @@ import "encoding/binary"
 import "strings"
 import "fmt"
 import "time"
+import . "os"
 
 type Encodable interface {
 	Encode(*bytes.Buffer) error
@@ -101,11 +102,11 @@ func (h header) Encode(buf *bytes.Buffer) error {
 	buf.WriteString(TAB)
 	buf.WriteString(h.m_ipAddress)
 	buf.WriteString(TAB)
-	buf.WriteString("main")
+	buf.WriteString("_")
 	buf.WriteString(TAB)
-	buf.WriteString("1")
+	buf.WriteString(strconv.Itoa(Getpid()))
 	buf.WriteString(TAB)
-	buf.WriteString("main")
+	buf.WriteString("_")
 	buf.WriteString(TAB)
 	mid, err := MESSAGE_ID_FACTORY.Next()
 	mid.Encode(buf)
