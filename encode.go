@@ -14,7 +14,7 @@ type Encodable interface {
 func (t *transaction) Encode(buf *bytes.Buffer) error {
 	if t.children == nil || len(t.children) == 0 {
 		buf.WriteString("A")
-		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))
+		buf.WriteString(t.start.Format("2006-01-02 15:04:05.000"))
 		buf.WriteString(TAB)
 		buf.WriteString(t.GetType())
 		buf.WriteString(TAB)
@@ -30,7 +30,7 @@ func (t *transaction) Encode(buf *bytes.Buffer) error {
 		buf.WriteString(LF)
 	} else {
 		buf.WriteString("t")
-		buf.WriteString(t.start.Format("2006-01-02 15:04:05.999"))
+		buf.WriteString(t.start.Format("2006-01-02 15:04:05.000"))
 		buf.WriteString(TAB)
 		buf.WriteString(t.GetType())
 		buf.WriteString(TAB)
@@ -41,7 +41,7 @@ func (t *transaction) Encode(buf *bytes.Buffer) error {
 			child.Encode(buf)
 		}
 		buf.WriteString("T")
-		buf.WriteString(t.end.Format("2006-01-02 15:04:05.999"))
+		buf.WriteString(t.end.Format("2006-01-02 15:04:05.000"))
 		buf.WriteString(TAB)
 		buf.WriteString(t.GetType())
 		buf.WriteString(TAB)
@@ -61,7 +61,7 @@ func (t *transaction) Encode(buf *bytes.Buffer) error {
 
 func (h event) Encode(buf *bytes.Buffer) error {
 	buf.WriteString("E")
-	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
+	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.000"))
 	buf.WriteString(TAB)
 	buf.WriteString(h.GetType())
 	buf.WriteString(TAB)
@@ -78,7 +78,7 @@ func (h event) Encode(buf *bytes.Buffer) error {
 //refactor expected.
 func (h heartbeat) Encode(buf *bytes.Buffer) error {
 	buf.WriteString("H")
-	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.999"))
+	buf.WriteString(h.GetTimestamp().Format("2006-01-02 15:04:05.000"))
 	buf.WriteString(TAB)
 	buf.WriteString(h.GetType())
 	buf.WriteString(TAB)
