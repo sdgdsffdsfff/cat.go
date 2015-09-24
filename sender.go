@@ -16,7 +16,7 @@ var (
 func cat_sender_init() {
 	sender_transaction_channel = make(chan Message, 1<<10)
 	sender_max_batch_size = 1 << 8
-	sender_pool, _ = pool.NewBlockingPool(1, 1, CONN_FACTORY)
+	sender_pool, _ = pool.NewBlockingPool(1, 1, 90 * time.Second, CONN_FACTORY)
 	go sender_run()
 }
 
@@ -45,9 +45,12 @@ collect:
 		}
 	}
 	close(messages)
-	if count > 0 {
+	if count == sender_max_batch_size {
 		sender_encode(messages, count)
 		return false
+	} else if count > 0 {
+		sender_encode(messages, count)
+		return true
 	} else {
 		return true
 	}
@@ -82,6 +85,9 @@ func sender_send(datas <-chan []byte) {
 	}
 	defer conn.Close()
 	for data := range datas {
-		conn.Write(data)
+		_, err = conn.Write(data)
+		if err != nil {
+			return
+		}
 	}
 }
